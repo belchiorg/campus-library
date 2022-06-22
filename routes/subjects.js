@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const books = require('../books.js')
+const {books, subs} = require('../books.js');
 
 //Function that checks if there's any book with the specified subject
 const inSubsList = () => subs.find(sub => sub.Subject.toLowerCase().trim().includes(subject.toLowerCase().trim()));
