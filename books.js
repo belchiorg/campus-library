@@ -14,7 +14,8 @@ const books = [
         {Subject: 'Chemistry', Author: "Adam Sharples, James Morton, Henning Wackerhage", Title: 'Molecular Exercise Physiology', id: 12},
         {Subject: 'Physics', Author: "Dr. Michio Kaku", Title: 'The God Equation: The Quest for a Theory of Everything', id: 13},
         {Subject: 'Biography', Author: "Andrew Hodges", Title: 'Alan Turing: The Enigma', id: 14},
-        {Subject: 'Economics', Author: "Thomas Sowell", Title: 'Basic Economics', id: 15}
+        {Subject: 'Economics', Author: "Thomas Sowell", Title: 'Basic Economics', id: 15},
+        {Subject: 'Thriller', Author: "IST Press", Title: 'À espera das notas de IAC', id: 16}
     ]
     
     const aux = books.map(book => {return book.Subject});
