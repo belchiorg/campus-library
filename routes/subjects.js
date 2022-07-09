@@ -1,57 +1,59 @@
 const express = require('express');
 const router = express.Router();
-const {books, subs} = require('../books.js');
+const mongoose = require('mongoose');
 
-//Function that checks if there's any book with the specified subject
-const inSubsList = () => subs.find(sub => sub.Subject.toLowerCase().trim().includes(subject.toLowerCase().trim()));
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     //sends all the subjects on the server
-    res.send(subs);
+    const subjects = await Subject.find().sort({name: 1});
+    res.send(subjects);
 })
 
-
-router.get('/:sub', (req, res) => {
-
-    //filters the books to just include the ones with the specified subject
-    const list = (books.filter(book => book.Subject.toLowerCase().trim().includes(req.params.sub.toLowerCase().trim())));
-    //If the list is empty, there's no book with such subject -> error 404, exits
-    if (list == []) return res.status(404).send('Subject not found');
-
-    //sends all books with the specified subject
-    res.send(list);
-})
-
-router.put('/:id', (req, res) => {
-    //Changes a book on the API
-    const {title, author, subject} = req.body;
-
-    //Finds the book with the specified id
-    const book = books.find(book => book.id === parseInt(req.params.id));
-    if (!book) return res.status(404).send('Theres\'s no book with id ' + req.params.id);
+router.post('/', async (req, res) =>    {
+    //Adds a new subject
     
-    //Changes the book
-    book.Subject =  subject;
-    book.Author = author;
-    book.Title=  title;
+    let subj = new Subject({
+        name: req.body.name
+    });
 
-    //If the new subject is not on the subs array, adds it.
-    if (!inSubsList) subs.push(subject);
+    subj = await subj.save()
 
-    res.status(201).send(book);
+    res.send(subj);
+    res.status(201);
+})
+
+
+router.put('/:id', async (req, res) => {
+    //Finds the subject with the specified id
+    const subj = await Subject.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            new: true
+        });
+    
+    if (!subj) return res.status(404).send('There is not a subject with such id');
+
+    res.status(201).send(subj)
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
     //Removes a book from the API
 
     //Finds the book with the specified id
-    const book = books.find(book => book.id === parseInt(req.params.id));
-    if (!book) return res.status(404).send('Theres\'s no book with id ' + req.params.id);
+    const subj = await Subject.findByIdAndRemove(req.params.id);
+
+    if (!subj) return res.status(404).send('Theres\'s no book with id ' + req.params.id);
 
     //Gets the book index and removes it.
-    const index = books.indexOf(book);
-    books.splice(index, 1);
-    res.status(201).send(book)
+    res.status(201).send(subj)
 }) 
+
+router.get('/:id', async (req, res) => {
+    const subj = await Subject.findById(req.params.id)
+    //If the list is empty, there's no book with such subject -> error 404, exits
+    if (!subj) return res.status(404).send('Subject not found');
+
+    //sends all books with the specified subject
+    res.send(subj);
+})
 
 module.exports = router;
