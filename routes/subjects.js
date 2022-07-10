@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const Subject = require('../models/subjects.js')
+import express from 'express';
+export const router = express.Router();
+import mongoose from 'mongoose'
+import { Subject } from '../models/subjects.js'
 
 
 router.get('/', async (req, res) => {
@@ -57,4 +57,3 @@ router.get('/:id', async (req, res) => {
     res.send(subj);
 })
 
-module.exports = router;

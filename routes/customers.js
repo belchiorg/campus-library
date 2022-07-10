@@ -1,8 +1,6 @@
-const express = require('express');
-const { required } = require('joi/lib/types/lazy');
-const router = express.Router();
-const mongoose = require('mongoose');
-const Customer = require('../models/customer.js')
+import express from 'express';
+export const router = express.Router();
+import { Customer } from '../models/customer.js'
 
 router.get('/', async (req, res) => {
     const customers = await Customer.find().sort({name: 1})
@@ -48,5 +46,3 @@ router.get('/:id', async (req, res) => {
 
     res.status(404).send(customer);
 })
-
-module.exports = router;

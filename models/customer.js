@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const Customer = mongoose.model('Customer', new mongoose.Schema({
+export const customerSchema = new mongoose.Schema({
     premium: {
         type: Boolean,
         required: true
@@ -16,6 +16,7 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
         min: 1000,
         max: 999999999999
     }
-}));
+})
 
-exports.Customer = Customer;
+export const Customer = mongoose.model('Customer', customerSchema);
+

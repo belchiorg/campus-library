@@ -1,12 +1,12 @@
-const Joi = require('joi'); //Joi 13.1.0
-const express = require('express');
-const {books, subs} = require('./books.js');
+import express from 'express';
+
 const app = express();
 
-const subjects = require('./routes/subjects')   //utiliza a pasta das routes
-const customers = require('./routes/customers')
+import {router as subjects } from './routes/subjects.js'   //utiliza a pasta das routes
+import {router as customers} from './routes/customers.js'
+import {router as books} from './routes/books.js'
 
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 mongoose.connect('mongodb://localhost/CampusLib')
     .then(() => console.log('Connected to MongoDB...'))
@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost/CampusLib')
 app.use(express.json());
 app.use('/api/subjects', subjects); //acede a /api/subjects/{sub} para ver os livros todos com esse subject
 app.use('/api/customers', customers);
+app.use('/api/books', books);
 
 app.get('/', (req, res) => {
     res.send('This is Belchior\'s University Library\n Which books are you looking for?\n');

@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose' ;
 
-const Subject = mongoose.model('Subject', new mongoose.Schema({
+export const subjectSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         minLenght: 2,
         maxLenght: 255
     }
-}));
+})
 
-exports.Subject = Subject;
+export const Subject = mongoose.model('Subject', subjectSchema);
