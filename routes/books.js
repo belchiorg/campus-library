@@ -1,6 +1,7 @@
 import express, { response, Router } from 'express';
 export const router = express.Router();
 import { Book } from '../models/books.js'
+import { Subject } from '../models/subjects.js';
 
 router.get('/', async (req, res) => {
     const books = await Book.find().sort({title: 1})
@@ -8,8 +9,21 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+
+    const subject = await Subject.findById(req.body.subjectId);
+
+    console.log(subject)
+    if (!subject) return res.status(404).send('Invalid subject');
     
-    let book = new Book(req.body);
+    let book = new Book({
+        title: req.body.title,
+        author: req.body.author,
+        subject: {
+            _id: subject._id,
+            name: subject.name
+        },
+        available: req.body.available
+    });
 
     book = await book.save();
 
